@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SMP Negeri 11 Palu | Cerdas, Berkarakter, Berbudaya</title>
     <!-- Favicon (Taskbar/Tab Logo) -->
-    <link rel="icon" type="image/png" href="https://cdn.phototourl.com/member/2026-04-09-21a62b2e-81cc-4c22-81ea-f4288cfcd84d.png">
+    <link id="dyn_favicon" class="cursor-pointer" rel="icon" type="image/png" href="https://cdn.phototourl.com/member/2026-04-09-21a62b2e-81cc-4c22-81ea-f4288cfcd84d.png">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Poppins -->
@@ -78,9 +78,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer">
-                    <img src="https://cdn.phototourl.com/member/2026-04-09-21a62b2e-81cc-4c22-81ea-f4288cfcd84d.png" alt="Logo SMPN 11 Palu" class="w-11 h-11 object-contain drop-shadow-sm">
+                    <img id="dyn_nav_logo_img" src="https://cdn.phototourl.com/member/2026-04-09-21a62b2e-81cc-4c22-81ea-f4288cfcd84d.png" alt="Logo" class="w-11 h-11 object-contain drop-shadow-sm">
                     <div>
-                        <h1 class="font-bold text-xl text-primary leading-tight">SMPN 11 PALU</h1>
+                        <h1 id="dyn_nav_logo_text" class="font-bold text-xl text-primary leading-tight">SMPN 11 PALU</h1>
                         <p class="text-xs text-gray-500 font-medium">Kota Palu</p>
                     </div>
                 </div>
@@ -112,7 +112,7 @@
     <section id="beranda" class="hero-bg relative pt-32 pb-20 lg:pt-48 lg:pb-32 flex items-center min-h-[90vh]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center lg:text-left flex flex-col lg:flex-row items-center gap-12">
             <div class="lg:w-2/3 text-white">
-                <span id="dyn_hero_badge" class="inline-block py-1 px-3 rounded-full bg-accent/20 text-accent border border-accent/30 text-sm font-semibold mb-6 fade-in-up">
+                <span id="dyn_hero_badge" class="inline-block py-1 px-3 rounded-full border text-sm font-semibold mb-6 fade-in-up">
                     Penerimaan Peserta Didik Baru Telah Dibuka
                 </span>
                 <h1 id="dyn_hero_title" class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 fade-in-up delay-100 leading-tight">
@@ -293,7 +293,7 @@
                 
                 <!-- TAB FILTER BERITA (DESAIN PREMIUM DAN RESPONSIF) -->
                 <div class="flex flex-wrap gap-2" id="berita-tabs">
-                    <button onclick="filterBerita('semua')" id="tab-semua" class="px-4 py-2 rounded-full font-semibold text-xs sm:text-sm transition-all duration-300 bg-primary text-white shadow-md shadow-primary/10">Semua Berita</button>
+                    <button onclick="filterBerita('semua')" id="tab-semua" class="px-4 py-2 rounded-full font-semibold text-xs sm:text-sm transition-all duration-300 bg-primary text-white shadow-md shadow-primary/10">All News</button>
                     <button onclick="filterBerita('terbaru')" id="tab-terbaru" class="px-4 py-2 rounded-full font-semibold text-xs sm:text-sm transition-all duration-300 bg-white text-gray-600 border border-gray-200 hover:bg-gray-50 shadow-sm">Baru (1 Minggu)</button>
                     <button onclick="filterBerita('bulan-ini')" id="tab-bulan-ini" class="px-4 py-2 rounded-full font-semibold text-xs sm:text-sm transition-all duration-300 bg-white text-gray-600 border border-gray-200 hover:bg-gray-50 shadow-sm">Bulan Ini</button>
                     <button onclick="filterBerita('arsip')" id="tab-arsip" class="px-4 py-2 rounded-full font-semibold text-xs sm:text-sm transition-all duration-300 bg-white text-gray-600 border border-gray-200 hover:bg-gray-50 shadow-sm">Arsip / Lama</button>
@@ -320,8 +320,8 @@
                 <!-- Info Sekolah -->
                 <div class="lg:col-span-1">
                     <div class="flex items-center gap-3 mb-6">
-                        <img src="https://cdn.phototourl.com/member/2026-04-09-21a62b2e-81cc-4c22-81ea-f4288cfcd84d.png" alt="Logo SMPN 11 Palu" class="w-10 h-10 object-contain drop-shadow-sm">
-                        <div><h2 class="font-bold text-xl tracking-wider">SMPN 11 PALU</h2></div>
+                        <img id="dyn_footer_logo_img" src="https://cdn.phototourl.com/member/2026-04-09-21a62b2e-81cc-4c22-81ea-f4288cfcd84d.png" alt="Logo" class="w-10 h-10 object-contain drop-shadow-sm">
+                        <div><h2 id="dyn_footer_logo_text" class="font-bold text-xl tracking-wider">SMPN 11 PALU</h2></div>
                     </div>
                     <p id="dyn_kontak_desc" class="text-gray-400 text-sm leading-relaxed mb-6">
                         Membentuk generasi penerus bangsa yang cerdas, berkarakter mulia, dan berbudaya lingkungan.
@@ -370,7 +370,7 @@
             <!-- Copyright & Admin Button -->
             <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                 <p class="text-gray-500 text-sm text-center md:text-left flex items-center">
-                    &copy; <span id="currentYear">2026</span> SMP Negeri 11 Palu. Hak Cipta Dilindungi.
+                    &copy; <span id="currentYear">2026</span> <span id="dyn_copyright_text">SMP Negeri 11 Palu. Hak Cipta Dilindungi.</span>
                     <!-- TOMBOL ADMIN -->
                     <button onclick="bukaAdmin()" class="ml-3 w-8 h-8 text-gray-700 hover:text-white bg-gray-800 hover:bg-primary transition duration-300 flex items-center justify-center rounded-full shadow-lg" title="Kelola Website"><i class="fas fa-lock text-xs"></i></button>
                 </p>
@@ -448,6 +448,14 @@
                         </summary>
                         <div class="p-5 space-y-4 border-t border-slate-100">
                             <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Nama Sekolah (Navbar & Footer)</label>
+                                <input type="text" id="in_school_name" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-sm" required>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Link Logo Sekolah (URL Gambar)</label>
+                                <input type="url" id="in_logo_url" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-sm" required>
+                            </div>
+                            <div>
                                 <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Link Gambar Latar (Background)</label>
                                 <input type="url" id="in_hero_bg_img" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-sm" required>
                             </div>
@@ -456,8 +464,31 @@
                                 <input type="text" id="in_hero_badge" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-sm" required>
                             </div>
                             <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Warna Tulisan Badge Atas</label>
+                                <div class="flex items-center gap-2">
+                                    <input type="color" id="in_hero_badge_color" class="w-10 h-10 border border-slate-200 rounded-lg cursor-pointer bg-transparent" required>
+                                    <input type="text" id="in_hero_badge_color_hex" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-mono" placeholder="#fbbf24" readonly>
+                                </div>
+                            </div>
+                            <div>
                                 <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Judul Utama</label>
                                 <input type="text" id="in_hero_title" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-sm" required>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Warna Judul Utama</label>
+                                    <div class="flex items-center gap-2">
+                                        <input type="color" id="in_hero_title_color" class="w-10 h-10 border border-slate-200 rounded-lg cursor-pointer bg-transparent" required>
+                                        <input type="text" id="in_hero_title_color_hex" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-mono" placeholder="#ffffff" readonly>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Warna Kata Sorotan ("Cerdas", "Berkarakter")</label>
+                                    <div class="flex items-center gap-2">
+                                        <input type="color" id="in_hero_accent_color" class="w-10 h-10 border border-slate-200 rounded-lg cursor-pointer bg-transparent" required>
+                                        <input type="text" id="in_hero_accent_color_hex" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-mono" placeholder="#fbbf24" readonly>
+                                    </div>
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Deskripsi Pendek</label>
@@ -466,7 +497,7 @@
                             
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6 p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
                                 <div>
-                                    <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Siswa Aktif</label>
+                                    <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Siswa Hack / Aktif</label>
                                     <input type="text" id="in_stat_siswa" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all" required>
                                 </div>
                                 <div>
@@ -614,6 +645,10 @@
                         </summary>
                         <div class="p-5 space-y-4 border-t border-slate-100">
                             <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Teks Hak Cipta (Copyright Footer)</label>
+                                <input type="text" id="in_copyright_text" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-sm" required>
+                            </div>
+                            <div>
                                 <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Deskripsi Pendek Footer</label>
                                 <textarea id="in_kontak_desc" rows="2" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-sm" required></textarea>
                             </div>
@@ -723,7 +758,9 @@
 
     <!-- SCRIPT CMS LOGIC -->
     <script>
-        // URL WEB APP GOOGLE APPS SCRIPT
+        // ==========================================================
+        // 1. MASUKKAN URL WEB APP GOOGLE APPS SCRIPT ANDA DI SINI
+        // ==========================================================
         const GAS_URL = 'https://script.google.com/macros/s/AKfycbxiIjghzMuiE3A6776hUlBJqhU8rrXJQJu5Hpn8n0uYqM1d7kGgl0RO5aXGA7UrNgMlnA/exec'; 
         
         // Hash dari Password default: admin
@@ -796,9 +833,14 @@
 
         // DATA DEFAULT (Menampung semua field website)
         let cmsData = {
+            school_name: 'SMPN 11 PALU',
+            logo_url: 'https://cdn.phototourl.com/member/2026-04-09-21a62b2e-81cc-4c22-81ea-f4288cfcd84d.png',
             hero_bg_img: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
             hero_badge: 'Penerimaan Peserta Didik Baru Telah Dibuka',
+            hero_badge_color: '#fbbf24',
             hero_title: 'Membentuk Generasi Cerdas & Berkarakter',
+            hero_title_color: '#ffffff',
+            hero_accent_color: '#fbbf24',
             hero_subtitle: 'Selamat datang di website resmi SMP Negeri 11 Palu. Kami berkomitmen memberikan pendidikan berkualitas untuk masa depan gemilang putra-putri bangsa.',
             stat_siswa: '850+',
             stat_guru: '45+',
@@ -815,11 +857,12 @@
             profil_tujuan: 'Mempersiapkan peserta didik yang kompeten, berkarakter, dan siap menghadapi tantangan global di masa depan.',
             fasilitas_title: 'Mendukung Pembelajaran Optimal',
             fasilitas_desc: 'Kami menyediakan lingkungan belajar yang nyaman dan fasilitas modern untuk memastikan setiap siswa dapat mengembangkan potensinya secara maksimal.',
-            fas_1_title: 'Perpustakaan Digital', fas_1_desc: 'Koleksi buku lengkap yang terintegrasi dengan sistem peminjaman digital dan area baca yang nyaman.',
+            fas_1_title: 'Perpustakaan Digital', fas_1_desc: 'Koleksi buku lengkap yang terintegrasi dengan sistem peminjaman digital and area baca yang nyaman.',
             fas_2_title: 'Lab Komputer & IT', fas_2_desc: 'Dilengkapi dengan PC spesifikasi terbaru dan koneksi internet cepat untuk mendukung literasi digital.',
-            fas_3_title: 'Laboratorium IPA', fas_3_desc: 'Peralatan praktik sains lengkap untuk menunjang pembelajaran biologi dan fisika aplikatif.',
+            fas_3_title: 'Laboratorium IPA', fas_3_desc: 'Peralalan praktik sains lengkap untuk menunjang pembelajaran biologi dan fisika aplikatif.',
             fas_4_title: 'Fasilitas Olahraga', fas_4_desc: 'Lapangan basket, voli, dan futsal yang luas untuk mewadahi kegiatan ekstrakurikuler siswa.',
             berita_list: JSON.stringify(defaultBerita),
+            copyright_text: 'SMP Negeri 11 Palu. Hak Cipta Dilindungi.',
             kontak_desc: 'Membentuk generasi penerus bangsa yang cerdas, berkarakter mulia, dan berbudaya lingkungan.',
             kontak_alamat: 'Jl. Pendidikan No. 11, Kecamatan Mantikulore, Kota Palu, Sulawesi Tengah',
             kontak_telp: '(0451) 123456',
@@ -851,14 +894,44 @@
 
         // Terapkan ke Web UI
         function updateDOM() {
+            document.getElementById('dyn_nav_logo_text').innerText = cmsData.school_name || 'SMPN 11 PALU';
+            document.getElementById('dyn_footer_logo_text').innerText = cmsData.school_name || 'SMPN 11 PALU';
+
+            // Logo Update
+            const defaultLogo = 'https://cdn.phototourl.com/member/2026-04-09-21a62b2e-81cc-4c22-81ea-f4288cfcd84d.png';
+            const logoToUse = cmsData.logo_url || defaultLogo;
+            
+            const fav = document.getElementById('dyn_favicon');
+            if (fav) fav.href = logoToUse;
+            
+            const navLogo = document.getElementById('dyn_nav_logo_img');
+            if (navLogo) navLogo.src = logoToUse;
+            
+            const footerLogo = document.getElementById('dyn_footer_logo_img');
+            if (footerLogo) footerLogo.src = logoToUse;
+
             let bgUrl = cmsData.hero_bg_img || 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80';
             document.getElementById('beranda').style.backgroundImage = `linear-gradient(rgba(30, 58, 138, 0.8), rgba(0, 0, 0, 0.7)), url('${bgUrl}')`;
             
-            document.getElementById('dyn_hero_badge').innerText = cmsData.hero_badge || '';
+            const badgeEl = document.getElementById('dyn_hero_badge');
+            if (badgeEl) {
+                badgeEl.innerText = cmsData.hero_badge || '';
+                const baseColor = cmsData.hero_badge_color || '#fbbf24';
+                badgeEl.style.color = baseColor;
+                badgeEl.style.borderColor = baseColor + '4D'; // Alpha opacity 30%
+                badgeEl.style.backgroundColor = baseColor + '1A'; // Alpha opacity 10%
+            }
             
-            let rawTitle = cmsData.hero_title !== undefined && cmsData.hero_title !== null ? String(cmsData.hero_title) : '';
-            let formattedTitle = rawTitle.replace('Cerdas', '<span class="text-accent">Cerdas</span>').replace('Berkarakter', '<span class="text-accent">Berkarakter</span>');
-            document.getElementById('dyn_hero_title').innerHTML = formattedTitle;
+            const titleEl = document.getElementById('dyn_hero_title');
+            if (titleEl) {
+                titleEl.style.color = cmsData.hero_title_color || '#ffffff';
+                let rawTitle = cmsData.hero_title !== undefined && cmsData.hero_title !== null ? String(cmsData.hero_title) : '';
+                let highlightColor = cmsData.hero_accent_color || '#fbbf24';
+                let formattedTitle = rawTitle
+                    .replace('Cerdas', `<span style="color: ${highlightColor}">Cerdas</span>`)
+                    .replace('Berkarakter', `<span style="color: ${highlightColor}">Berkarakter</span>`);
+                titleEl.innerHTML = formattedTitle;
+            }
             
             document.getElementById('dyn_hero_subtitle').innerText = cmsData.hero_subtitle || '';
 
@@ -889,6 +962,7 @@
             document.getElementById('dyn_kontak_alamat').innerText = cmsData.kontak_alamat || '';
             document.getElementById('dyn_kontak_telp').innerText = cmsData.kontak_telp || '';
             document.getElementById('dyn_kontak_email').innerText = cmsData.kontak_email || '';
+            document.getElementById('dyn_copyright_text').innerText = cmsData.copyright_text || 'SMP Negeri 11 Palu. Hak Cipta Dilindungi.';
 
             // Ambil daftar berita asli
             let daftarBerita = [];
@@ -1115,6 +1189,33 @@
                     }
                 });
 
+                setTimeout(() => {
+                    const badgeColorPicker = document.getElementById('in_hero_badge_color');
+                    const badgeColorHex = document.getElementById('in_hero_badge_color_hex');
+                    if (badgeColorPicker && badgeColorHex) {
+                        badgeColorHex.value = badgeColorPicker.value;
+                        badgeColorPicker.addEventListener('input', (e) => {
+                            badgeColorHex.value = e.target.value;
+                        });
+                    }
+                    const titleColorPicker = document.getElementById('in_hero_title_color');
+                    const titleColorHex = document.getElementById('in_hero_title_color_hex');
+                    if (titleColorPicker && titleColorHex) {
+                        titleColorHex.value = titleColorPicker.value;
+                        titleColorPicker.addEventListener('input', (e) => {
+                            titleColorHex.value = e.target.value;
+                        });
+                    }
+                    const accentColorPicker = document.getElementById('in_hero_accent_color');
+                    const accentColorHex = document.getElementById('in_hero_accent_color_hex');
+                    if (accentColorPicker && accentColorHex) {
+                        accentColorHex.value = accentColorPicker.value;
+                        accentColorPicker.addEventListener('input', (e) => {
+                            accentColorHex.value = e.target.value;
+                        });
+                    }
+                }, 50);
+
                 // Set List Berita Array
                 try {
                     tempBeritaList = typeof cmsData.berita_list === 'string' ? JSON.parse(cmsData.berita_list) : [...cmsData.berita_list];
@@ -1251,6 +1352,15 @@
         }
 
         // Fungsi menghapus link tertentu di dalam berita tertentu
+        function htmlEscape(str) {
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
         function hapusTautanBerita(newsIndex, linkIndex) {
             simpanTempBeritaInput();
             if (tempBeritaList[newsIndex].links) {
