@@ -38,13 +38,19 @@
 
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-        /* Hero Image Overlay Gradient - Dioptimalkan untuk performa scrolling lancar bebas lag */
+        /* Hero Image Overlay Gradient */
         .hero-bg {
             background-image: linear-gradient(rgba(30, 58, 138, 0.95), rgba(15, 23, 42, 0.95));
             background-size: cover; 
             background-position: center; 
-            background-attachment: scroll !important; /* Memaksa scroll agar scrolling super lancar di semua gawai */
-            will-change: transform; /* Akselerasi hardware GPU */
+            background-attachment: scroll; 
+        }
+        
+        /* Efek fixed hanya diaktifkan untuk layar besar (PC/Laptop) agar HP tidak berat */
+        @media (min-width: 1024px) {
+            .hero-bg {
+                background-attachment: fixed;
+            }
         }
         
         /* Details summary hide arrow */
@@ -55,7 +61,7 @@
 <body class="font-sans text-gray-800 antialiased bg-gray-50">
 
     <!-- Layar Loading (Preloader) dengan durasi transisi cepat -->
-    <div id="preloader" class="fixed inset-0 z-[999] bg-white flex flex-col items-center justify-center transition-all duration-350">
+    <div id="preloader" class="fixed inset-0 z-[999] bg-white flex flex-col items-center justify-center transition-all duration-300">
         <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary mb-4"></div>
         <p class="text-gray-500 font-medium animate-pulse">Memuat data terbaru...</p>
     </div>
@@ -754,7 +760,7 @@
         // ==========================================================
         // 1. MASUKKAN URL WEB APP GOOGLE APPS SCRIPT ANDA DI SINI
         // ==========================================================
-        const GAS_URL = 'https://script.google.com/macros/s/AKfycbwFUgR0_sxo_JL8fey3-N0dnv9mXZ3g9PkARmQ5pTM1JRVhNjCbYDbzYAMV-8N2YMK3tg/exec'; 
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbxiIjghzMuiE3A6776hUlBJqhU8rrXJQJu5Hpn8n0uYqM1d7kGgl0RO5aXGA7UrNgMlnA/exec'; 
         
         // Hash dari Password default: admin
         const ADMIN_PASSWORD_HASH = '05b5b82e1f70c45925d72f5cd0a75ffe564e14bfe0cb85bc74d4ee4d8d55b159'; 
@@ -763,17 +769,15 @@
         let currentSortedBerita = [];
         let aktifKategori = 'semua'; // Kategori aktif standar saat web dibuka
 
-        // Fungsi Menyembunyikan Preloader Loading secara Aman dan Cepat (Maks 1.5 detik)
+        // Fungsi Menyembunyikan Preloader Loading secara Aman dan Cepat (Maks 2 detik)
         function sembunyikanPreloader() {
             const preloader = document.getElementById('preloader');
             if(preloader && !preloader.classList.contains('opacity-0')) {
                 preloader.classList.add('opacity-0');
-                preloader.classList.add('pointer-events-none');
-                setTimeout(() => { preloader.style.display = 'none'; }, 350);
+                setTimeout(() => { preloader.style.display = 'none'; }, 300);
             }
         }
-        // Jaminan keamanan mutlak agar loading mati maksimal dalam 1.5 detik jika koneksi lambat
-        setTimeout(sembunyikanPreloader, 1500);
+        setTimeout(sembunyikanPreloader, 2000);
 
         // Fungsi Menampilkan Notifikasi Melayang (Toast)
         function showToast(message, type = 'success') {
@@ -803,19 +807,6 @@
         function getSanitizedNewsKey(title) {
             if (!title) return 'views_news_default';
             return 'views_news_' + title.toLowerCase().trim().replace(/[^a-z0-9]/g, '_');
-        }
-
-        // Fungsi custom Fetch dengan batas waktu (Timeout) agar browser tidak hang / loading berputar selamanya
-        async function fetchWithTimeout(resource, options = {}) {
-            const { timeout = 1200 } = options; // Batas toleransi tunggu data database: 1.2 detik
-            const controller = new AbortController();
-            const id = setTimeout(() => controller.abort(), timeout);
-            const response = await fetch(resource, {
-                ...options,
-                signal: controller.signal  
-            });
-            clearTimeout(id);
-            return response;
         }
 
         // Berita Default
@@ -885,7 +876,7 @@
             kontak_email: 'info@smpn11palu.sch.id'
         };
 
-        // Ambil Data dari Spreadsheet dengan Sistem Anti-Hang (Timeout)
+        // Ambil Data dari Spreadsheet
         async function loadCMSData() {
             if (!GAS_URL) { 
                 updateDOM(); 
@@ -894,8 +885,7 @@
             }
             try {
                 const urlDenganAntiCache = GAS_URL + (GAS_URL.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
-                // Menggunakan fetchWithTimeout agar web tidak terhenti jika Apps Script lambat dimuat
-                const response = await fetchWithTimeout(urlDenganAntiCache, { timeout: 1200 });
+                const response = await fetch(urlDenganAntiCache);
                 if (response.ok) {
                     const data = await response.json();
                     if (data && Object.keys(data).length > 0) {
@@ -903,14 +893,9 @@
                     }
                 }
             } catch (error) { 
-                console.warn('Menggunakan cache data lokal karena database merespon lambat:', error.message); 
+                console.error('Gagal mengambil data database:', error); 
             } finally {
-                // Lindungi proses render DOM agar preloader wajib mati apa pun yang terjadi
-                try {
-                    updateDOM();
-                } catch(domError) {
-                    console.error('Error saat render DOM:', domError);
-                }
+                updateDOM();
                 sembunyikanPreloader();
             }
         }
@@ -1143,13 +1128,11 @@
             if (!GAS_URL || !title) return;
             const viewKey = getSanitizedNewsKey(title);
             try {
-                // Gunakan fetchWithTimeout agar tidak membebani loading browser tab ketika berita diklik
-                await fetchWithTimeout(GAS_URL, {
+                const response = await fetch(GAS_URL, {
                     method: 'POST',
                     body: JSON.stringify({ action: 'increment_view', key: viewKey }),
                     mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    timeout: 1000
+                    headers: { 'Content-Type': 'application/json' }
                 });
                 
                 // Update counter secara luring lokal terlebih dahulu agar interaksi instan
@@ -1161,7 +1144,7 @@
                     counterElement.innerText = cmsData[viewKey];
                 }
             } catch (err) {
-                console.warn('Gagal mengirimkan statistik pembaca berita:', err.message);
+                console.error('Gagal mengirimkan hitung pengunjung:', err);
             }
         }
 
@@ -1251,20 +1234,6 @@
             if (modal) modal.classList.add('hidden'); 
         }
 
-        // Jalankan fungsi sinkronisasi inputan HEX dari color picker secara real-time
-        const inisialisasiSyncColorPickers = () => {
-            const colors = ['hero_badge_color', 'hero_title_color', 'hero_accent_color'];
-            colors.forEach(col => {
-                const picker = document.getElementById('in_' + col);
-                const hexText = document.getElementById('in_' + col + '_hex');
-                if (picker && hexText) {
-                    picker.addEventListener('input', (e) => {
-                        hexText.value = e.target.value.toUpperCase();
-                    });
-                }
-            });
-        };
-
         async function cekLogin() {
             const inputPass = document.getElementById('admin-pass').value;
             
@@ -1287,12 +1256,6 @@
                             let valStr = cmsData[key] !== undefined && cmsData[key] !== null ? String(cmsData[key]) : '';
                             el.value = valStr.replace(/<[^>]*>?/gm, '');
                         }
-                        
-                        // Isi HEX text value pendukung
-                        if (key.endsWith('_color') || key === 'hero_accent_color') {
-                            const hexEl = document.getElementById('in_' + key + '_hex');
-                            if (hexEl) hexEl.value = (cmsData[key] || '').toUpperCase();
-                        }
                     }
                 });
 
@@ -1301,7 +1264,6 @@
                 } catch(e) { tempBeritaList = []; }
                 
                 renderAdminBerita();
-                inisialisasiSyncColorPickers();
             } else {
                 const errEl = document.getElementById('login-error');
                 if (errEl) errEl.classList.remove('hidden');
