@@ -760,7 +760,7 @@
         // ==========================================================
         // 1. MASUKKAN URL WEB APP GOOGLE APPS SCRIPT ANDA DI SINI
         // ==========================================================
-        const GAS_URL = 'https://script.google.com/macros/s/AKfycbxiIjghzMuiE3A6776hUlBJqhU8rrXJQJu5Hpn8n0uYqM1d7kGgl0RO5aXGA7UrNgMlnA/exec'; 
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbyGD_hZqOIDlywloDSQLI_Pb0Z312ggk4QDxlQ-ob6IcdyPWrVV36VF6ClIyDh4UYYOtg/exec'; 
         
         // Hash dari Password default: admin
         const ADMIN_PASSWORD_HASH = '05b5b82e1f70c45925d72f5cd0a75ffe564e14bfe0cb85bc74d4ee4d8d55b159'; 
@@ -769,17 +769,15 @@
         let currentSortedBerita = [];
         let aktifKategori = 'semua'; // Kategori aktif standar saat web dibuka
 
-        // Fungsi Menyembunyikan Preloader Loading secara Aman dan Cepat (Maks 1.5 detik)
+        // Fungsi Menyembunyikan Preloader Loading secara Aman dan Cepat (Maks 2 detik)
         function sembunyikanPreloader() {
             const preloader = document.getElementById('preloader');
             if(preloader && !preloader.classList.contains('opacity-0')) {
                 preloader.classList.add('opacity-0');
-                preloader.classList.add('pointer-events-none');
                 setTimeout(() => { preloader.style.display = 'none'; }, 300);
             }
         }
-        // Jaminan keamanan preloader wajib mati maksimal dalam 1.5 detik jika terjadi gangguan eksternal
-        setTimeout(sembunyikanPreloader, 1500);
+        setTimeout(sembunyikanPreloader, 2000);
 
         // Fungsi Menampilkan Notifikasi Melayang (Toast)
         function showToast(message, type = 'success') {
@@ -878,42 +876,27 @@
             kontak_email: 'info@smpn11palu.sch.id'
         };
 
-        // Ambil Data dari Spreadsheet secara Asinkron (Latar Belakang)
+        // Ambil Data dari Spreadsheet
         async function loadCMSData() {
             if (!GAS_URL) { 
                 updateDOM(); 
+                sembunyikanPreloader();
                 return; 
             }
-
-            // Batasi waktu request maksimal 5 detik agar cold start Apps Script teratasi tanpa melimitasi sinkronisasi
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 5000);
-
             try {
                 const urlDenganAntiCache = GAS_URL + (GAS_URL.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
-                const response = await fetch(urlDenganAntiCache, { signal: controller.signal });
-                
+                const response = await fetch(urlDenganAntiCache);
                 if (response.ok) {
                     const data = await response.json();
                     if (data && Object.keys(data).length > 0) {
-                        // Gabungkan data dari spreadsheet secara aman (abaikan jika kolom kosong)
-                        Object.keys(data).forEach(key => {
-                            if (data[key] !== undefined && data[key] !== null && String(data[key]).trim() !== "") {
-                                if (key === 'berita_list' && (data[key] === '[]' || data[key] === '')) {
-                                    cmsData[key] = '[]';
-                                } else {
-                                    cmsData[key] = data[key];
-                                }
-                            }
-                        });
-                        // Perbarui DOM di latar belakang setelah data dari spreadsheet sukses dimuat
-                        updateDOM();
+                        cmsData = { ...cmsData, ...data };
                     }
                 }
             } catch (error) { 
-                console.warn('Menggunakan cache data lokal karena koneksi ke database lambat:', error.message); 
+                console.error('Gagal mengambil data database:', error); 
             } finally {
-                clearTimeout(timeoutId);
+                updateDOM();
+                sembunyikanPreloader();
             }
         }
 
@@ -1008,10 +991,6 @@
                 daftarBerita = typeof cmsData.berita_list === 'string' ? JSON.parse(cmsData.berita_list) : cmsData.berita_list;
             } catch(e) { daftarBerita = []; }
 
-            if (!Array.isArray(daftarBerita)) {
-                daftarBerita = [];
-            }
-
             const parseDateIndo = (dateStr) => {
                 if (!dateStr) return 0;
                 const bulan = {'januari':0, 'februari':1, 'maret':2, 'april':3, 'mei':4, 'juni':5, 'juli':6, 'agustus':7, 'september':8, 'oktober':9, 'november':10, 'desember':11, 'jan':0, 'feb':1, 'mar':2, 'apr':3, 'jun':5, 'jul':6, 'agu':7, 'sep':8, 'okt':9, 'nov':10, 'des':11};
@@ -1084,8 +1063,7 @@
                 return new Date(dateStr).getTime() || 0;
             };
 
-            const listToFilter = Array.isArray(currentSortedBerita) ? currentSortedBerita : [];
-            const beritaTerfilter = listToFilter.map((b, idx) => ({ ...b, indexAsli: idx }))
+            const beritaTerfilter = currentSortedBerita.map((b, idx) => ({ ...b, indexAsli: idx }))
                 .filter(berita => {
                     if (aktifKategori === 'semua') return true;
                     
@@ -1423,39 +1401,10 @@
             renderAdminBerita();
         }
 
-        function inisialisasiWeb() {
-            // 1. Tampilkan data lokal default yang cantik SECARA INSTAN saat halaman dibuka
-            updateDOM();
-            
-            // 2. Langsung matikan / hilangkan preloader loading tanpa menunggu fetch spreadsheet
-            sembunyikanPreloader();
-            
-            // 3. Ambil data terbaru dari Spreadsheet di latar belakang secara asinkron
-            if (GAS_URL) {
-                loadCMSData();
-            }
-        }
-
-        // Jalankan inisialisasi secara aman dan asinkron
-        if (document.readyState === 'complete' || document.readyState === 'interactive') {
-            inisialisasiWeb();
-        } else {
-            document.addEventListener('DOMContentLoaded', inisialisasiWeb);
-        }
-
         function tambahAdminBerita() {
             simpanTempBeritaInput(); 
             tempBeritaList.push({ img: '', date: '', title: '', desc: '', links: [] });
             renderAdminBerita();
-        }
-
-        function htmlEscape(str) {
-            return str
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
         }
 
         function hapusAdminBerita(index) {
@@ -1515,6 +1464,9 @@
                 }
             }
         }
+
+        // Jalankan pemuatan data setelah halaman siap dimuat
+        window.addEventListener('DOMContentLoaded', loadCMSData);
     </script>
 </body>
 </html>
